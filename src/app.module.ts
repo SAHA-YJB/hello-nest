@@ -1,15 +1,15 @@
 import { Module } from '@nestjs/common';
-import { MoviesController } from './movies/movies.controller';
-import { MoviesService } from './movies/movies.service';
+import { MoviesModule } from './movies/movies.module';
+import { AppController } from './app.controller';
 
 // 데코레이터
 // app.module.ts 파일은 애플리케이션의 루트 모듈을 정의하는 파일
 @Module({
-  imports: [],
+  imports: [MoviesModule],
   // url을 가져오고 함수를 실행하는 컨트롤러
   // express의 라우터 역할
-  controllers: [MoviesController],
+  controllers: [AppController],
   // 비즈니스 로직을 담당하는 서비스
-  providers: [MoviesService],
+  providers: [],
 })
 export class AppModule {}
