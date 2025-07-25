@@ -1,6 +1,8 @@
-import { Body, Controller, Delete, Get, Param, Patch, Post, Query } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, ParseIntPipe, Patch, Post, Query } from '@nestjs/common';
 import { Movie } from './entities/movie.entity';
 import { MoviesService } from './movies.service';
+import { CreateMovieDto } from './dto/create-movie.dto';
+import { UpdateMovieDto } from './dto/update-movie.dto';
 
 // @Controller('movies')의 괄호 안에 있는 문자열은 url의 엔트리포인트를 의미한다.
 // -> /movies
@@ -10,7 +12,7 @@ export class MoviesController {
   constructor(private readonly moviesService: MoviesService) {}
 
   @Get()
-  getAllMovie(): Movie[] {
+  getAllMovie() {
     return this.moviesService.getAllMovie();
   }
 
@@ -22,22 +24,22 @@ export class MoviesController {
   }
 
   @Get(':movieId')
-  getOneMovie(@Param('movieId') movieId: string): Movie {
+  getOneMovie(@Param('movieId') movieId: number): Movie {
     return this.moviesService.getOneMovie(movieId);
   }
 
   @Post()
-  createMovie(@Body() movieData: Movie): boolean {
+  createMovie(@Body() movieData: CreateMovieDto) {
     return this.moviesService.createMovie(movieData);
   }
 
   @Delete(':movieId')
-  deleteMovie(@Param('movieId') movieId: string): Movie[] {
+  deleteMovie(@Param('movieId') movieId: number): Movie[] {
     return this.moviesService.deleteMovie(movieId);
   }
 
-  @Patch('/:movieId')
-  patchMovie(@Param('movieId') movieId: string, @Body() updateData: Movie): Movie {
+  @Patch(':movieId')
+  patchMovie(@Param('movieId', ParseIntPipe) movieId: number, @Body() updateData: UpdateMovieDto) {
     return this.moviesService.patchMovie(movieId, updateData);
   }
 }
